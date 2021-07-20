@@ -45,7 +45,7 @@ export default function DeleteAlert({ refetch, onClose, selectedNoteIds }) {
           <div className="text-sm leading-5 text-gray-700">
             {`Are you sure you want to delete ${
               selectedNoteIds.length > 1 ? "these notes" : "the note"
-            }? All of your data will be permanently removed from our database forever.This action cannot be undone.`}
+            }? All of your data will be permanently removed from our database forever. This action cannot be undone.`}
           </div>
         </div>
       </div>
