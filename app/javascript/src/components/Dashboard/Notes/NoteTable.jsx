@@ -1,5 +1,5 @@
 import React from "react";
-import { Checkbox } from "neetoui";
+import { Checkbox, Badge, Avatar, Tooltip } from "neetoui";
 
 export default function NoteTable({
   selectedNoteIds,
@@ -7,8 +7,8 @@ export default function NoteTable({
   notes = [],
 }) {
   return (
-    <div className="w-full px-4">
-      <table className="nui-table nui-table--checkbox">
+    <div className="w-full p-10">
+      <table className="nui-table nui-table--checkbox nui-table--actions nui-table--hover nui-table--avatar">
         <thead>
           <tr>
             <th>
@@ -26,8 +26,20 @@ export default function NoteTable({
                 }}
               />
             </th>
-            <th className="text-left">Title</th>
-            <th className="text-left">Description</th>
+            <th className="text-left text-gray-400">Title</th>
+            <th className="text-left text-gray-400">Description</th>
+            <th className="text-left text-gray-400">
+              <label>Tags</label>
+            </th>
+            <th className="text-left text-gray-400">
+              <label>Created Date</label>
+            </th>
+            <th className="text-left text-gray-400">
+              <label>Due Date</label>
+            </th>
+            <th className="text-left text-gray-400">
+              <label>Contact</label>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -56,10 +68,46 @@ export default function NoteTable({
               </td>
               <td>
                 <div className="flex flex-row items-center justify-start text-gray-900">
-                  {note.title}
+                  <a>{note.title}</a>
                 </div>
               </td>
-              <td>{note.description}</td>
+              <td>
+                {note.description.length > 20
+                  ? note.description.slice(0, 20) + "..."
+                  : note.description}
+              </td>
+              <td className="text-center">
+                {note.tags.map(tag => (
+                  <label key={tag.id}>
+                    <Badge color={tag.color}>{tag.label}</Badge>
+                  </label>
+                ))}
+              </td>
+              <td>
+                <label>{note.created_date}</label>
+              </td>
+              <td>
+                <label>{note.due_date ? note.due_date : "--"}</label>
+              </td>
+              <td>
+                <label>
+                  <Avatar size={36} contact={{ name: note.contact }} />
+                </label>
+              </td>
+              <td>
+                <div className="flex flex-row space-x-3">
+                  <Tooltip
+                    content={<span>Edit</span>}
+                    position="bottom"
+                    className="ml-auto"
+                  >
+                    <i className="ri-pencil-line ri-lg text-gray-600 hover:text-gray-900"></i>
+                  </Tooltip>
+                  <Tooltip content={<span>Delete</span>} position="bottom">
+                    <i className="ri-delete-bin-5-line ri-lg text-gray-600 hover:text-gray-900"></i>
+                  </Tooltip>
+                </div>
+              </td>
             </tr>
           ))}
         </tbody>
