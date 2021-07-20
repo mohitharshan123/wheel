@@ -1,10 +1,10 @@
-const notesReducer = (state, { type, payload }) => {
+const notesReducer = (notes, { type, payload }) => {
   switch (type) {
   case "ADD_NOTE": {
-    return [...state, payload];
+    return [...notes, payload];
   }
-  case "DELETE_NOTE": {
-    return [];
+  case "DELETE_NOTES": {
+    return notes.filter(note => !payload.includes(note.id));
   }
   default: {
     throw new Error(`Unhandled action type: ${type}`);

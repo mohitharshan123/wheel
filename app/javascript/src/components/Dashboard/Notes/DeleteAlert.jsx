@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Modal } from "neetoui";
-import notesApi from "apis/notes";
+import { useNotesDispatch } from "contexts/notes";
 
 export default function DeleteAlert({ refetch, onClose, selectedNoteIds }) {
   const [deleting, setDeleting] = useState(false);
+  const notesDispatch = useNotesDispatch();
+
   const handleDelete = async () => {
     try {
       setDeleting(true);
-      await notesApi.destroy({ ids: selectedNoteIds });
+      notesDispatch({ type: "DELETE_NOTES", payload: selectedNoteIds });
       onClose();
       refetch();
     } catch (error) {
@@ -16,6 +18,7 @@ export default function DeleteAlert({ refetch, onClose, selectedNoteIds }) {
       setDeleting(false);
     }
   };
+
   return (
     <Modal
       isOpen
@@ -24,7 +27,7 @@ export default function DeleteAlert({ refetch, onClose, selectedNoteIds }) {
       showFooter
       submitButtonProps={{
         style: "danger",
-        label: "Continue anyway",
+        label: "Delete",
         loading: deleting,
         onClick: handleDelete,
       }}
@@ -36,11 +39,13 @@ export default function DeleteAlert({ refetch, onClose, selectedNoteIds }) {
         </div>
 
         <div className="ml-4">
-          <h3 className="mb-2 text-lg font-medium text-gray-700">
-            Delete {selectedNoteIds.length} notes?
+          <h3 className="mb-2 text-lg font-semibold text-gray-700">
+            Delete {selectedNoteIds.length > 1 ? "notes" : "note"}
           </h3>
-          <div className="text-sm leading-5 text-gray-500">
-            Are you sure you want to continue? This cannot be undone.
+          <div className="text-sm leading-5 text-gray-700">
+            {`Are you sure you want to delete ${
+              selectedNoteIds.length > 1 ? "these notes" : "the note"
+            }? All of your data will be permanently removed from our database forever.This action cannot be undone.`}
           </div>
         </div>
       </div>
