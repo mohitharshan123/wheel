@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal } from "neetoui";
+import { Modal, Toastr } from "neetoui";
 import { useNotesDispatch } from "contexts/notes";
 
 export default function DeleteAlert({ refetch, onClose, selectedNoteIds }) {
@@ -10,10 +10,14 @@ export default function DeleteAlert({ refetch, onClose, selectedNoteIds }) {
     try {
       setDeleting(true);
       notesDispatch({ type: "DELETE_NOTES", payload: selectedNoteIds });
+      Toastr.success(
+        `${selectedNoteIds.length > 1 ? "Notes" : "Note"} deleted successfuly.`
+      );
       onClose();
       refetch();
     } catch (error) {
       logger.error(error);
+      Toastr.error("An error occurred.");
     } finally {
       setDeleting(false);
     }
