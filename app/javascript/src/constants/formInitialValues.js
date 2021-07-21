@@ -13,4 +13,12 @@ export default {
     password: "",
     passwordConfirmation: "",
   },
+  notesForm: {
+    title: "",
+    tag: "",
+    description: "",
+    contact: "",
+    enableDueDate: false,
+    due_date: "",
+  },
 };
