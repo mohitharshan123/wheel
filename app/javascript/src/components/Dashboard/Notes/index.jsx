@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Button, PageLoader } from "neetoui";
 import { Header, SubHeader } from "neetoui/layouts";
-
 import { useNotesState } from "contexts/notes";
 import EmptyState from "components/Common/EmptyState";
 import EmptyNotesListImage from "images/EmptyNotesList";
 import notesApi from "apis/notes";
-import sortOptions from "constants/sortOptions";
+import SORT_OPTIONS from "constants/sortOptions";
+import FormPane from "components/Common/FormPane";
+
 import NoteTable from "./NoteTable";
-import NewNotePane from "./NewNotePane";
 import DeleteAlert from "./DeleteAlert";
+import NewNoteForm from "./NewNoteForm";
 
 const Notes = () => {
   const [loading, setLoading] = useState(true);
@@ -67,7 +68,7 @@ const Notes = () => {
               disabled: !selectedNoteIds.length,
             }}
             sortProps={{
-              options: sortOptions,
+              options: SORT_OPTIONS.notesPage,
               sortBy: { column: "title", direction: "asc" },
               onClick: () => null,
             }}
@@ -94,7 +95,9 @@ const Notes = () => {
           primaryActionLabel="Add New Note"
         />
       )}
-      <NewNotePane
+      <FormPane
+        title="Add Note"
+        Form={NewNoteForm}
         showPane={showNewNotePane}
         setShowPane={setShowNewNotePane}
       />
