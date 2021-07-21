@@ -21,4 +21,11 @@ export default {
     enableDueDate: false,
     due_date: "",
   },
+  contactsForm: {
+    name: "",
+    email: "",
+    contact_number: "",
+    department: "",
+    add_to_basecamp: false,
+  },
 };

@@ -1,6 +1,5 @@
 import React from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
-
 import Navbar from "components/Common/Navbar";
 import { NotesProvider } from "contexts/notes";
 import { ContactsProvider } from "contexts/contacts";
