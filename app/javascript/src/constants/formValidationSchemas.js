@@ -1,5 +1,7 @@
 import * as Yup from "yup";
 
+const phoneRegExp = /^[6-9]\d{9}$/;
+
 export default {
   loginForm: Yup.object().shape({
     email: Yup.string().email("Invalid email address").required("Required"),
@@ -40,5 +42,20 @@ export default {
       })
       .required("Contact is required"),
     due_date: Yup.string(),
+  }),
+  contactsForm: Yup.object({
+    name: Yup.string().required("Title is required"),
+    email: Yup.string()
+      .email("Please enter a valid email address")
+      .required("Email is required"),
+    contact_number: Yup.string()
+      .required("Contact number is required")
+      .matches(phoneRegExp, "Contact number is not valid"),
+    department: Yup.object().shape({
+      id: Yup.string().required(),
+      value: Yup.string().required(),
+      label: Yup.string().required(),
+    }),
+    add_to_basecamp: Yup.bool(),
   }),
 };

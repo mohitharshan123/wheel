@@ -66,7 +66,7 @@ export default function ContactTable({
                   </div>
                 </td>
                 <td className="max-w-xs truncate">{contact.email}</td>
-                <td className="text-center">{contact.department}</td>
+                <td className="text-center">{contact.department.label}</td>
                 <td className="text-center">{contact.contact_number}</td>
                 <td>
                   <div className="flex flex-row justify-between">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Formik, Form, Field } from "formik";
 import { Input, Textarea, Select, Switch } from "neetoui/formik";
 import { Button, DateInput, Label, Toastr } from "neetoui";
@@ -6,9 +6,16 @@ import formInitialValues from "constants/formInitialValues";
 import FORM_VALIDATION_SCHEMA from "constants/formValidationSchemas";
 import NOTE_FORM_OPTIONS from "constants/notesFormOptions";
 import { useNotesDispatch } from "contexts/notes";
+import { useContactsState } from "contexts/contacts";
 
 export default function NewNoteForm({ onClose }) {
   const notesDispatch = useNotesDispatch();
+  const contacts = useContactsState();
+  const contactsForSelection = useMemo(
+    () =>
+      contacts.map(contact => ({ value: contact.name, label: contact.name })),
+    [contacts]
+  );
 
   const handleSubmit = values => {
     notesDispatch({
@@ -45,7 +52,7 @@ export default function NewNoteForm({ onClose }) {
             isClearable={true}
             isSearchable={true}
             name="contact"
-            options={NOTE_FORM_OPTIONS.contacts}
+            options={contactsForSelection}
           />
           <div className="flex flex-row justify-between">
             <Label>Add Due Date To Note</Label>
