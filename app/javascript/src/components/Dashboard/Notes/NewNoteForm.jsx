@@ -2,10 +2,9 @@ import React from "react";
 import { Formik, Form, Field } from "formik";
 import { Input, Textarea, Select, Switch } from "neetoui/formik";
 import { Button, DateInput, Label, Toastr } from "neetoui";
-
-import formValidationSchemas from "constants/formValidationSchemas";
 import formInitialValues from "constants/formInitialValues";
-import notesFormOptions from "constants/notesFormOptions";
+import FORM_VALIDATION_SCHEMA from "constants/formValidationSchemas";
+import NOTE_FORM_OPTIONS from "constants/notesFormOptions";
 import { useNotesDispatch } from "contexts/notes";
 
 export default function NewNoteForm({ onClose }) {
@@ -28,7 +27,7 @@ export default function NewNoteForm({ onClose }) {
     <Formik
       initialValues={formInitialValues.notesForm}
       onSubmit={handleSubmit}
-      validationSchema={formValidationSchemas.notesForm}
+      validationSchema={FORM_VALIDATION_SCHEMA.notesForm}
     >
       {({ isSubmitting, isValid, touched, values, setFieldValue }) => (
         <Form className="flex flex-col space-y-4">
@@ -37,7 +36,7 @@ export default function NewNoteForm({ onClose }) {
             label="Tags"
             placeholder="Select a Tag"
             name="tag"
-            options={notesFormOptions.tags}
+            options={NOTE_FORM_OPTIONS.tags}
           />
           <Textarea label="Note Description" name="description" rows={8} />
           <Select
@@ -46,7 +45,7 @@ export default function NewNoteForm({ onClose }) {
             isClearable={true}
             isSearchable={true}
             name="contact"
-            options={notesFormOptions.contacts}
+            options={NOTE_FORM_OPTIONS.contacts}
           />
           <div className="flex flex-row justify-between">
             <Label>Add Due Date To Note</Label>

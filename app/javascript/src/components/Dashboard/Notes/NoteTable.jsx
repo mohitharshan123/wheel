@@ -43,6 +43,13 @@ export default function NoteTable({
     setSelectedNoteIds([]);
   };
 
+  const getTagColor = note =>
+    note.tag.value == "internal"
+      ? "green"
+      : note.tag.value == "agile"
+        ? "blue"
+        : "red";
+
   return (
     <>
       <div className="w-full p-10">
@@ -58,18 +65,11 @@ export default function NoteTable({
               </th>
               <th className="text-left text-gray-400">Title</th>
               <th className="text-left text-gray-400">Description</th>
-              <th className="text-left text-gray-400">
-                <label>Tags</label>
-              </th>
-              <th className="text-left text-gray-400">
-                <label>Created Date</label>
-              </th>
-              <th className="text-left text-gray-400">
-                <label>Due Date</label>
-              </th>
-              <th className="text-left text-gray-400">
-                <label>Contact</label>
-              </th>
+              <th className="text-center text-gray-400">Tags</th>
+              <th className="text-center text-gray-400">Created Date</th>
+              <th className="text-center text-gray-400">Due Date</th>
+              <th className="text-center text-gray-400">Contact</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -89,27 +89,13 @@ export default function NoteTable({
                 </td>
                 <td className="max-w-xs truncate">{note.description}</td>
                 <td className="text-center">
-                  <label key={note.tag.id}>
-                    <Badge
-                      color={
-                        note.tag.value == "internal"
-                          ? "green"
-                          : note.tag.value == "agile"
-                            ? "blue"
-                            : "red"
-                      }
-                    >
-                      {note.tag.label}
-                    </Badge>
-                  </label>
+                  <Badge color={getTagColor(note)}>{note.tag.label}</Badge>
                 </td>
-                <td>
-                  <label>{note.created_date}</label>
+                <td className="text-center">{note.created_date}</td>
+                <td className="text-center">
+                  {note.due_date ? note.due_date : "--"}
                 </td>
-                <td>
-                  <label>{note.due_date ? note.due_date : "--"}</label>
-                </td>
-                <td>
+                <td className="text-center">
                   <label>
                     <Avatar size={36} contact={{ name: note.contact.label }} />
                   </label>
@@ -121,13 +107,13 @@ export default function NoteTable({
                       position="bottom"
                       className="ml-auto"
                     >
-                      <Button className="ri-pencil-line ri-lg " style="text" />
+                      <Button className="ri-pencil-line ri-lg " style="icon" />
                     </Tooltip>
                     <Tooltip content={<span>Delete</span>} position="bottom">
                       <Button
                         onClick={() => handleItemDeleteClick(note)}
                         className="ri-delete-bin-5-line ri-lg"
-                        style="text"
+                        style="icon"
                       />
                     </Tooltip>
                   </div>
