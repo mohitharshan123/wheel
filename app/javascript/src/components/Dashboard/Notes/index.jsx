@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import notesApi from "apis/notes";
 import { Button, PageLoader } from "neetoui";
+import { Header, SubHeader } from "neetoui/layouts";
+
+import { useNotesState } from "contexts/notes";
 import EmptyState from "components/Common/EmptyState";
 import EmptyNotesListImage from "images/EmptyNotesList";
-import { Header, SubHeader } from "neetoui/layouts";
-import { useNotesState } from "contexts/notes";
+import notesApi from "apis/notes";
+import sortOptions from "constants/sortOptions";
 import NoteTable from "./NoteTable";
 import NewNotePane from "./NewNotePane";
 import DeleteAlert from "./DeleteAlert";
@@ -31,6 +33,11 @@ const Notes = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const OnAlertClose = () => {
+    setShowDeleteAlert(false);
+    setSelectedNoteIds([]);
   };
 
   if (loading) {
@@ -60,11 +67,7 @@ const Notes = () => {
               disabled: !selectedNoteIds.length,
             }}
             sortProps={{
-              options: [
-                { value: "title", label: "Title" },
-                { value: "created_date", label: "Created Date" },
-                { value: "due_date", label: "Due Date" },
-              ],
+              options: sortOptions,
               sortBy: { column: "title", direction: "asc" },
               onClick: () => null,
             }}
@@ -94,15 +97,11 @@ const Notes = () => {
       <NewNotePane
         showPane={showNewNotePane}
         setShowPane={setShowNewNotePane}
-        fetchNotes={fetchNotes}
       />
       {showDeleteAlert && (
         <DeleteAlert
           selectedNoteIds={selectedNoteIds}
-          onClose={() => {
-            setShowDeleteAlert(false);
-            setSelectedNoteIds([]);
-          }}
+          onClose={OnAlertClose}
           refetch={fetchNotes}
         />
       )}

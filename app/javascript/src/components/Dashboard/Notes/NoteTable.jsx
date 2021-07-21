@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Checkbox, Badge, Avatar, Tooltip } from "neetoui";
+import { Checkbox, Badge, Avatar, Tooltip, Button } from "neetoui";
+
 import DeleteAlert from "./DeleteAlert";
 
 export default function NoteTable({
@@ -10,6 +11,38 @@ export default function NoteTable({
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [selectedRowID, setSelectedRowID] = useState(null);
 
+  const handleMasterSelectionChange = () => {
+    const noteIds = notes.map(note => note.id);
+    if (selectedNoteIds.length === noteIds.length) {
+      setSelectedNoteIds([]);
+    } else {
+      setSelectedNoteIds(noteIds);
+    }
+  };
+
+  const handleItemSelectionChange = (event, note) => {
+    event.stopPropagation();
+    const index = selectedNoteIds.indexOf(note.id);
+    if (index > -1) {
+      setSelectedNoteIds([
+        ...selectedNoteIds.slice(0, index),
+        ...selectedNoteIds.slice(index + 1),
+      ]);
+    } else {
+      setSelectedNoteIds([...selectedNoteIds, note.id]);
+    }
+  };
+
+  const handleItemDeleteClick = note => {
+    setShowDeleteAlert(true);
+    setSelectedRowID(note.id);
+  };
+
+  const handleAlertDialogClose = () => {
+    setShowDeleteAlert(false);
+    setSelectedNoteIds([]);
+  };
+
   return (
     <>
       <div className="w-full p-10">
@@ -18,18 +51,9 @@ export default function NoteTable({
             <tr>
               <th>
                 <Checkbox
-                  checked={
-                    selectedNoteIds.length === notes.map(note => note.id).length
-                  }
+                  checked={selectedNoteIds.length === notes.length}
                   onChange={() => null}
-                  onClick={() => {
-                    const noteIds = notes.map(note => note.id);
-                    if (selectedNoteIds.length === noteIds.length) {
-                      setSelectedNoteIds([]);
-                    } else {
-                      setSelectedNoteIds(noteIds);
-                    }
-                  }}
+                  onClick={handleMasterSelectionChange}
                 />
               </th>
               <th className="text-left text-gray-400">Title</th>
@@ -50,45 +74,34 @@ export default function NoteTable({
           </thead>
           <tbody>
             {notes.map(note => (
-              <tr
-                key={note.id}
-                className={"cursor-pointer bg-white hover:bg-gray-50"}
-              >
+              <tr key={note.id}>
                 <td>
                   <Checkbox
                     checked={selectedNoteIds.includes(note.id)}
                     onChange={() => null}
-                    onClick={event => {
-                      event.stopPropagation();
-                      const index = selectedNoteIds.indexOf(note.id);
-
-                      if (index > -1) {
-                        setSelectedNoteIds([
-                          ...selectedNoteIds.slice(0, index),
-                          ...selectedNoteIds.slice(index + 1),
-                        ]);
-                      } else {
-                        setSelectedNoteIds([...selectedNoteIds, note.id]);
-                      }
-                    }}
+                    onClick={event => handleItemSelectionChange(event, note)}
                   />
                 </td>
                 <td>
                   <div className="flex flex-row items-center justify-start text-gray-900">
-                    <a>{note.title}</a>
+                    <Button style="link" label={note.title} />
                   </div>
                 </td>
-                <td>
-                  {note.description.length > 20
-                    ? note.description.slice(0, 20) + "..."
-                    : note.description}
-                </td>
+                <td className="max-w-xs truncate">{note.description}</td>
                 <td className="text-center">
-                  {note.tags.map(tag => (
-                    <label key={tag.id}>
-                      <Badge color={tag.color}>{tag.label}</Badge>
-                    </label>
-                  ))}
+                  <label key={note.tag.id}>
+                    <Badge
+                      color={
+                        note.tag.value == "internal"
+                          ? "green"
+                          : note.tag.value == "agile"
+                            ? "blue"
+                            : "red"
+                      }
+                    >
+                      {note.tag.label}
+                    </Badge>
+                  </label>
                 </td>
                 <td>
                   <label>{note.created_date}</label>
@@ -98,7 +111,7 @@ export default function NoteTable({
                 </td>
                 <td>
                   <label>
-                    <Avatar size={36} contact={{ name: note.contact }} />
+                    <Avatar size={36} contact={{ name: note.contact.label }} />
                   </label>
                 </td>
                 <td>
@@ -108,16 +121,14 @@ export default function NoteTable({
                       position="bottom"
                       className="ml-auto"
                     >
-                      <i className="ri-pencil-line ri-lg text-gray-600 hover:text-gray-900"></i>
+                      <Button className="ri-pencil-line ri-lg " style="text" />
                     </Tooltip>
                     <Tooltip content={<span>Delete</span>} position="bottom">
-                      <i
-                        onClick={() => {
-                          setShowDeleteAlert(true);
-                          setSelectedRowID(note.id);
-                        }}
-                        className="ri-delete-bin-5-line ri-lg text-gray-600 hover:text-gray-900"
-                      ></i>
+                      <Button
+                        onClick={() => handleItemDeleteClick(note)}
+                        className="ri-delete-bin-5-line ri-lg"
+                        style="text"
+                      />
                     </Tooltip>
                   </div>
                 </td>
@@ -129,10 +140,7 @@ export default function NoteTable({
       {showDeleteAlert && (
         <DeleteAlert
           selectedNoteIds={[selectedRowID]}
-          onClose={() => {
-            setShowDeleteAlert(false);
-            setSelectedNoteIds([]);
-          }}
+          onClose={handleAlertDialogClose}
           refetch={() => null}
         />
       )}

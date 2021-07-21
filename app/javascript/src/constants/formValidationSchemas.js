@@ -23,4 +23,22 @@ export default {
     lastName: Yup.string().required("Required"),
     password: Yup.string().required("Required"),
   }),
+  notesForm: Yup.object({
+    title: Yup.string().required("Title is required"),
+    description: Yup.string().required("Description is required"),
+    tag: Yup.object()
+      .shape({
+        id: Yup.string().required(),
+        value: Yup.string().required(),
+        label: Yup.string().required(),
+      })
+      .required("Tag is required"),
+    contact: Yup.object()
+      .shape({
+        value: Yup.string().required(),
+        label: Yup.string().required(),
+      })
+      .required("Contact is required"),
+    due_date: Yup.string(),
+  }),
 };
