@@ -26,7 +26,6 @@ export default function DeleteAlert({ refetch, onClose, selectedNoteIds }) {
   return (
     <Alert
       isOpen
-      icon="ri-notification-3-line"
       style="danger"
       confirmationText={`Are you sure you want to delete ${
         selectedNoteIds.length > 1 ? "these notes" : "the note"

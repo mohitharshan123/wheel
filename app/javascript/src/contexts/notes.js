@@ -1,9 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-
 import notesReducer from "reducers/notes";
+import DUMMY_DATA from "constants/dummyData";
 
-const initialState = [];
+const initialState = DUMMY_DATA.notes;
 
 const NotesStateContext = React.createContext(initialState);
 const NotesDispatchContext = React.createContext(null);

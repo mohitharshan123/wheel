@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import contactsReducer from "reducers/contacts";
+import DUMMY_DATA from "constants/dummyData";
 
-const initialState = [];
+const initialState = DUMMY_DATA.contacts;
 
 const ContactsStateContext = React.createContext(initialState);
 const ContactsDispatchContext = React.createContext(null);
