@@ -37,13 +37,12 @@ export default function ContactForm({ onClose, itemData }) {
     <Formik
       initialValues={itemData ? itemData : formInitialValues.contactsForm}
       onSubmit={handleSubmit}
-      enableReinitialize
-      validateOnMount
       validationSchema={FORM_VALIDATION_SCHEMA.contactsForm}
     >
       {({ isSubmitting, isValid, touched }) => (
         <Form className="flex flex-col space-y-8">
           <Input label="Name" name="name" />
+          <Input label="Email" name="email" />
           <Input
             label="Contact Number"
             placeholder="Eg: 9595476566"
