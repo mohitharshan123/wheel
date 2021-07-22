@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Checkbox, Badge, Avatar, Tooltip, Button } from "neetoui";
+import FormPane from "components/Common/FormPane";
 
 import DeleteAlert from "./DeleteAlert";
+import NoteForm from "./NoteForm";
 
 export default function NoteTable({
   selectedNoteIds,
@@ -9,7 +11,8 @@ export default function NoteTable({
   notes = [],
 }) {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
-  const [selectedRowID, setSelectedRowID] = useState(null);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [showNotePane, setShowNotePane] = useState(false);
 
   const handleMasterSelectionChange = () => {
     const noteIds = notes.map(note => note.id);
@@ -35,12 +38,17 @@ export default function NoteTable({
 
   const handleItemDeleteClick = note => {
     setShowDeleteAlert(true);
-    setSelectedRowID(note.id);
+    setSelectedRow(note);
   };
 
   const handleAlertDialogClose = () => {
     setShowDeleteAlert(false);
     setSelectedNoteIds([]);
+  };
+
+  const handleOnEditClicked = row => {
+    setShowNotePane(true);
+    setSelectedRow(row);
   };
 
   const getTagColor = note =>
@@ -52,7 +60,7 @@ export default function NoteTable({
 
   return (
     <>
-      <div className="w-full p-10">
+      <div className="w-full pt-md pr-lg pl-lg_offset_1">
         <table className="nui-table nui-table--checkbox nui-table--actions nui-table--hover nui-table--avatar">
           <thead>
             <tr>
@@ -107,7 +115,11 @@ export default function NoteTable({
                       position="bottom"
                       className="ml-auto"
                     >
-                      <Button className="ri-pencil-line ri-lg " style="icon" />
+                      <Button
+                        onClick={() => handleOnEditClicked(note)}
+                        className="ri-pencil-line ri-lg "
+                        style="icon"
+                      />
                     </Tooltip>
                     <Tooltip content={<span>Delete</span>} position="bottom">
                       <Button
@@ -123,9 +135,16 @@ export default function NoteTable({
           </tbody>
         </table>
       </div>
+      <FormPane
+        title="Edit Note"
+        Form={NoteForm}
+        showPane={showNotePane}
+        setShowPane={setShowNotePane}
+        itemData={selectedRow}
+      />
       {showDeleteAlert && (
         <DeleteAlert
-          selectedNoteIds={[selectedRowID]}
+          selectedNoteIds={[selectedRow?.id]}
           onClose={handleAlertDialogClose}
           refetch={() => null}
         />

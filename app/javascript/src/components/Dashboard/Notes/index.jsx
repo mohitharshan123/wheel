@@ -10,7 +10,7 @@ import FormPane from "components/Common/FormPane";
 
 import NoteTable from "./NoteTable";
 import DeleteAlert from "./DeleteAlert";
-import NewNoteForm from "./NewNoteForm";
+import NoteForm from "./NoteForm";
 
 const Notes = () => {
   const [loading, setLoading] = useState(true);
@@ -18,6 +18,7 @@ const Notes = () => {
   const [showDeleteAlert, setShowDeleteAlert] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedNoteIds, setSelectedNoteIds] = useState([]);
+
   const notes = useNotesState();
 
   useEffect(() => {
@@ -97,7 +98,7 @@ const Notes = () => {
       )}
       <FormPane
         title="Add Note"
-        Form={NewNoteForm}
+        Form={NoteForm}
         showPane={showNewNotePane}
         setShowPane={setShowNewNotePane}
       />

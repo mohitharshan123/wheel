@@ -30,6 +30,20 @@ module.exports = {
           900: "#192040",
         },
       },
+      padding: {
+        sm: '12px',
+        md: '48px',
+        lg: '99px',
+        lg_offset_1: '98px',
+        xl: '120px',
+      },
+      maxWidth: {
+        xs: '100px',
+        sm: '120px',
+        md: '320px',
+        lg: '480px',
+        xl: '640px',
+      }
     }
   },
   variants: {

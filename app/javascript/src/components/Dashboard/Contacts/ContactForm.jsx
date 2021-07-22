@@ -7,10 +7,23 @@ import FORM_VALIDATION_SCHEMA from "constants/formValidationSchemas";
 import CONTACTS_FORM_OPTIONS from "constants/contactsFormOptions";
 import { useContactsDispatch } from "contexts/contacts";
 
-export default function NewContactForm({ onClose }) {
+export default function ContactForm({ onClose, itemData }) {
   const contactsDispatch = useContactsDispatch();
 
   const handleSubmit = values => {
+    itemData ? editContact(values) : addContact(values);
+    onClose();
+    Toastr.success(`Contact ${itemData ? "edited" : "added"} successfully`);
+  };
+
+  const editContact = values => {
+    contactsDispatch({
+      type: "EDIT_CONTACT",
+      payload: values,
+    });
+  };
+
+  const addContact = values => {
     contactsDispatch({
       type: "ADD_CONTACT",
       payload: {
@@ -18,20 +31,19 @@ export default function NewContactForm({ onClose }) {
         id: Math.random(),
       },
     });
-    onClose();
-    Toastr.success("New Contact added successfully");
   };
 
   return (
     <Formik
-      initialValues={formInitialValues.contactsForm}
+      initialValues={itemData ? itemData : formInitialValues.contactsForm}
       onSubmit={handleSubmit}
+      enableReinitialize
+      validateOnMount
       validationSchema={FORM_VALIDATION_SCHEMA.contactsForm}
     >
       {({ isSubmitting, isValid, touched }) => (
-        <Form className="flex flex-col space-y-4">
+        <Form className="flex flex-col space-y-8">
           <Input label="Name" name="name" />
-          <Input label="Email" name="email" />
           <Input
             label="Contact Number"
             placeholder="Eg: 9595476566"
@@ -59,7 +71,7 @@ export default function NewContactForm({ onClose }) {
             />
             <Button
               type="submit"
-              label="Save Changes"
+              label="Submit"
               size="large"
               style="primary"
               className="ml-2"
