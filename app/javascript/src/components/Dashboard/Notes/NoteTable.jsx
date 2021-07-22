@@ -96,9 +96,9 @@ export default function NoteTable({
                   {note.due_date ? note.due_date : "--"}
                 </td>
                 <td className="text-center">
-                  <label>
+                  <div className="flex flex-row justify-center">
                     <Avatar size={36} contact={{ name: note.contact.label }} />
-                  </label>
+                  </div>
                 </td>
                 <td>
                   <div className="flex flex-row space-x-3">

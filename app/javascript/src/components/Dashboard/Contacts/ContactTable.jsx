@@ -69,14 +69,12 @@ export default function ContactTable({
                 <td className="text-center">{contact.department.label}</td>
                 <td className="text-center">{contact.contact_number}</td>
                 <td>
-                  <div className="flex flex-row justify-between">
-                    <div className="w-full"></div>
+                  <div className="flex flex-row justify-center">
                     <Checkbox
                       onChange={() => null}
                       name="add_to_basecamp"
                       checked={contact.add_to_basecamp}
                     />
-                    <div className="w-full"></div>
                   </div>
                 </td>
                 <td>
