@@ -9,7 +9,7 @@ import SORT_OPTIONS from "constants/sortOptions";
 import { useContactsState } from "contexts/contacts";
 
 import ContactTable from "./ContactTable";
-import NewContactForm from "./NewContactForm";
+import ContactForm from "./ContactForm";
 
 const Contacts = () => {
   const [loading, setLoading] = useState(true);
@@ -90,7 +90,7 @@ const Contacts = () => {
       )}
       <FormPane
         title="Add Contact"
-        Form={NewContactForm}
+        Form={ContactForm}
         showPane={showNewContactPane}
         setShowPane={setShowNewContactPane}
       />

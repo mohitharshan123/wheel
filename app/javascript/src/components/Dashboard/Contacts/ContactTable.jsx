@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Checkbox, Avatar, Tooltip, Button } from "neetoui";
+import FormPane from "components/Common/FormPane";
+
+import ContactForm from "./ContactForm";
 
 export default function ContactTable({
   selectedContactIds,
   setSelectedContactIds,
   contacts = [],
 }) {
+  const [showContactPane, setShowContactPane] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+
   const handleMasterSelectionChange = () => {
     const contacIds = contacts.map(contact => contact.id);
     if (selectedContactIds.length === contacIds.length) {
@@ -28,9 +34,14 @@ export default function ContactTable({
     }
   };
 
+  const handleOnEditClicked = contact => {
+    setShowContactPane(true);
+    setSelectedRow(contact);
+  };
+
   return (
     <>
-      <div className="w-full p-10">
+      <div className="w-full pt-md pr-lg pl-lg_offset_1">
         <table className="nui-table nui-table--checkbox nui-table--actions nui-table--hover nui-table--avatar">
           <thead>
             <tr>
@@ -71,7 +82,8 @@ export default function ContactTable({
                 <td>
                   <div className="flex flex-row justify-center">
                     <Checkbox
-                      onChange={() => null}
+                      className="pointer-events-none"
+                      onChange={() => false}
                       name="add_to_basecamp"
                       checked={contact.add_to_basecamp}
                     />
@@ -84,7 +96,11 @@ export default function ContactTable({
                       position="bottom"
                       className="ml-auto"
                     >
-                      <Button className="ri-pencil-line ri-lg " style="icon" />
+                      <Button
+                        onClick={() => handleOnEditClicked(contact)}
+                        className="ri-pencil-line ri-lg "
+                        style="icon"
+                      />
                     </Tooltip>
                     <Tooltip content={<span>Delete</span>} position="bottom">
                       <Button
@@ -99,6 +115,13 @@ export default function ContactTable({
           </tbody>
         </table>
       </div>
+      <FormPane
+        title="Edit Contact"
+        Form={ContactForm}
+        showPane={showContactPane}
+        setShowPane={setShowContactPane}
+        itemData={selectedRow}
+      />
     </>
   );
 }
