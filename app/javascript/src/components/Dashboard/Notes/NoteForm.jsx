@@ -29,7 +29,9 @@ export default function NoteForm({ onClose, itemData }) {
       type: "EDIT_NOTE",
       payload: {
         ...values,
-        due_date: new Date(values.due_date).toDateString(),
+        due_date: values.due_date
+          ? new Date(values.due_date).toDateString()
+          : "",
       },
     });
   };
@@ -40,7 +42,9 @@ export default function NoteForm({ onClose, itemData }) {
       payload: {
         ...values,
         id: Math.random(),
-        due_date: new Date(values.due_date).toDateString(),
+        due_date: values.due_date
+          ? new Date(values.due_date).toDateString()
+          : "",
         created_date: new Date().toDateString(),
       },
     });
